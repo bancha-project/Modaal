@@ -35,7 +35,8 @@
 
 	width (integer)					: Desired width of the modal. Required for iframe type. Defaults to undefined //TODO
 	height (integer)				: Desired height of the modal. Required for iframe type. Defaults to undefined //TODO
-
+	border_radius (integer)			: Desired border-radius of the modal. Required for iframe type. Defaults to undefined //TODO
+	
 	background_scroll (boolean)		: Set this to true to enable the page to scroll behind the open modal.
 
     should_open (boolean|function)  : Boolean or closure that returns a boolean to determine whether to open the modal or not.
@@ -345,17 +346,19 @@
 				self.options.custom_class = ' ' + self.options.custom_class;
 			}
 
-			// if width and heights exists and is typeof number
+			// if width, height and border-radius exists and is typeof number
 			var dimensionsStyle = '';
-			if ( self.options.width && self.options.height && typeof self.options.width == 'number' && typeof self.options.height == 'number' ) {
-				// if width and height exist, and they are both numbers
-				dimensionsStyle = ' style="max-width:' + self.options.width + 'px;height:' + self.options.height + 'px;overflow:auto;"';
-			} else if ( self.options.width && typeof self.options.width == 'number' ) {
-				// if only width
-				dimensionsStyle = ' style="max-width:' + self.options.width + 'px;"';
-			} else if ( self.options.height && typeof self.options.height == 'number' ) {
-				// if only height
-				dimensionsStyle = ' style="height:' + self.options.height + 'px;overflow:auto;"';
+			if ( self.options.width && typeof self.options.width == 'number' ) {
+				dimensionsStyle = 'max-width:' + self.options.width + 'px;';
+			}
+			if ( self.options.height && typeof self.options.height == 'number' ) {
+				dimensionsStyle = dimensionsStyle + 'height:' + self.options.height + 'px;overflow:auto;';
+			} 
+			if ( self.options.border_radius && typeof self.options.border_radius == 'number') {
+				dimensionsStyle = dimensionsStyle + 'border-radius:' + self.options.border_radius + 'px;';
+			}
+			if (dimensionsStyle != '') {
+				dimensionsStyle = ' style="' + dimensionsStyle + '"'
 			}
 
 			// Reset dimensions style (width and height) for certain types
@@ -1114,6 +1117,7 @@
 		close_aria_label: 'Close (Press escape to close)',
 		width: null,
 		height: null,
+		border_radius: null,
 
 		//Events
 		before_open: function(){},
@@ -1269,6 +1273,12 @@
 		if ( self.attr('data-modaal-height') ) {
 			inline_options = true;
 			options.height = parseInt( self.attr('data-modaal-height') );
+		}
+
+		// option: border_radius
+		if ( self.attr('data-modaal-iborder-radius') ) {
+			inline_options = true;
+			options.border_radius = self.attr('data-modaal-iborder-radius');
 		}
 
 		// option: confirm_button_text
