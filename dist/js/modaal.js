@@ -36,7 +36,7 @@
 	width (integer)					: Desired width of the modal. Required for iframe type. Defaults to undefined //TODO
 	height (integer)				: Desired height of the modal. Required for iframe type. Defaults to undefined //TODO
 	border_radius (integer)			: Desired border-radius of the modal. Required for iframe type. Defaults to undefined //TODO
-	
+
 	background_scroll (boolean)		: Set this to true to enable the page to scroll behind the open modal.
 
     should_open (boolean|function)  : Boolean or closure that returns a boolean to determine whether to open the modal or not.
@@ -58,6 +58,7 @@
 	=== Confirm Options & Events ===
 	confirm_button_text (string)	: Text on the confirm button. Defaults to 'Confirm'
 	confirm_cancel_button_text (string) : Text on the confirm modal cancel button. Defaults to 'Cancel'
+	confirm_button_swap (boolean) : Swap confirm button and confirm modal cancel button. Defaults to 'false'
 	confirm_title (string)			: Title for confirm modal. Default 'Confirm Title'
 	confirm_content (string)		: HTML content for confirm message
 	confirm_callback (function)		: Callback function for when the confirm button is pressed as opposed to cancel
@@ -353,7 +354,7 @@
 			}
 			if ( self.options.height && typeof self.options.height == 'number' ) {
 				dimensionsStyle = dimensionsStyle + 'height:' + self.options.height + 'px;overflow:auto;';
-			} 
+			}
 			if ( self.options.border_radius && typeof self.options.border_radius == 'number') {
 				dimensionsStyle = dimensionsStyle + 'border-radius:' + self.options.border_radius + 'px;';
 			}
@@ -555,14 +556,23 @@
 		// ----------------------------------------------------------------
 		create_confirm : function() {
 			var self = this;
+			var button;
+
+			if (!self.options.confirm_button_swap) {
+				button = '<button type="button" class="modaal-confirm-btn modaal-ok" aria-label="Confirm">' + self.options.confirm_button_text + '</button>' +
+						'<button type="button" class="modaal-confirm-btn modaal-cancel" aria-label="Cancel">' + self.options.confirm_cancel_button_text + '</button>'
+			} else {
+				button = '<button type="button" class="modaal-confirm-btn modaal-cancel" aria-label="Cancel">' + self.options.confirm_cancel_button_text + '</button>' +
+						'<button type="button" class="modaal-confirm-btn modaal-ok" aria-label="Confirm">' + self.options.confirm_button_text + '</button>'
+			}
+
 			var content;
 
 			content = '<div class="modaal-content-container">' +
 					'<h1 id="modaal-title">' + self.options.confirm_title + '</h1>' +
 					'<div class="modaal-confirm-content">' + self.options.confirm_content + '</div>' +
 						'<div class="modaal-confirm-wrap">' +
-							'<button type="button" class="modaal-confirm-btn modaal-ok" aria-label="Confirm">' + self.options.confirm_button_text + '</button>' +
-							'<button type="button" class="modaal-confirm-btn modaal-cancel" aria-label="Cancel">' + self.options.confirm_cancel_button_text + '</button>' +
+							button +
 						'</div>' +
 					'</div>' +
 				'</div>';
@@ -1131,6 +1141,7 @@
 		//Confirm Modal
 		confirm_button_text: 'Confirm', // text on confirm button
 		confirm_cancel_button_text: 'Cancel',
+		confrim_button_swap: false,
 		confirm_title: 'Confirm Title', // title for confirm modal
 		confirm_content: '<p>This is the default confirm dialog content. Replace me through the options</p>', // html for confirm message
 		confirm_callback: function() {},
@@ -1291,6 +1302,12 @@
 		if ( self.attr('data-modaal-confirm-cancel-button-text') ) {
 			inline_options = true;
 			options.confirm_cancel_button_text = self.attr('data-modaal-confirm-cancel-button-text');
+		}
+
+		// option: confirm_button_swap
+		if ( self.attr('data-modaal-confirm-button-swap') ) {
+			inline_options = true;
+			options.confirm_button_swap = (self.attr('data-modaal-confirm-button-swap') === 'true' ? true : false);
 		}
 
 		// option: confirm_title
