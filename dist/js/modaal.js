@@ -1287,9 +1287,9 @@
 		}
 
 		// option: border_radius
-		if ( self.attr('data-modaal-iborder-radius') ) {
+		if ( self.attr('data-modaal-border-radius') ) {
 			inline_options = true;
-			options.border_radius = self.attr('data-modaal-iborder-radius');
+			options.border_radius = self.attr('data-modaal-border-radius');
 		}
 
 		// option: confirm_button_text
