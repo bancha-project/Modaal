@@ -12,7 +12,7 @@
     "gulp-cache": "^0.4.1",
     "gulp-csso": "^3.0.0",
     "gulp-merge-media-queries": "^0.2.1",
-    "gulp-autoprefixer": "^3.1.1",
+    "gulp-autoprefixer": "^6.1.0",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.2.1",
